@@ -52,9 +52,17 @@ int main(int argc, char *argv[]){
     
 	nh.param<std::string>("twist_topic", input_topic, "/cmd_vel");
 	nh.param<std::string>("smooth_twist_topic", output_topic, "/cmd_vel_smoothed");
-	nh.param<float>("beta", beta, 0.3);
+	if(!ros::param::get("~/beta", beta))
+		ROS_ERROR("%s","Beta parameter must be defined");
+		//nh.param("beta", beta, 0.3);
 	nh.param<int>("averaging_method", averaging_method, 1);
 	nh.param<bool>("smooth_with_zero", smooth_zero, false);
+	
+	if(averaging_method == 1)
+		ROS_INFO("Executing %s with beta equal %f", "exponential decay", beta);
+	else if(averaging_method == 2)
+		ROS_INFO("Executing %s with beta equal %f", "exponential approach", beta);
+
 
 
 	if(averaging_method != 1 && averaging_method != 2)
