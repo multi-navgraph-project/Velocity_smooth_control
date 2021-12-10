@@ -8,15 +8,15 @@ Smoothing the angular and linear velocity output by the TEB to elliminate signal
 - Parameters
 
 
---twist_topic: topic to subscribe for the output velocity by the local planner.
+> twist_topic: topic to subscribe for the output velocity by the local planner.
  
---smooth_twist_topic: topic to publish the smooth velocity.
+> smooth_twist_topic: topic to publish the smooth velocity.
  
---averaging_method: 1 for exponential decay algorithm and 2 for exponential approach algorithm.
+> averaging_method: 1 for exponential decay algorithm and 2 for exponential approach algorithm.
  
---smooth_with_zero: true to start the smooth signal from zero and false to tart from the initial value.
+> smooth_with_zero: true to start the smooth signal from zero and false to tart from the initial value.
 
---beta: a float between 0 and 1 to control the smoothing procedure. Approching 0 the signal would be slightly smoothed, approching 1 the signal would be very smooth (at exact 1.0 the exponential decay algorithm would ouput just the same signal but with a delay).
+> beta: a float between 0 and 1 to control the smoothing procedure. Approching 0 the signal would be slightly smoothed, approching 1 the signal would be very smooth (at exact 1.0 the exponential decay algorithm would ouput just the same signal but with a delay).
  
  
  
@@ -26,4 +26,6 @@ Smoothing the angular and linear velocity output by the TEB to elliminate signal
 - Parameters
 
 
---twist_topic: topic to subscribe for the output velocity to convert.
+> twist_topic: topic to subscribe for the output velocity to convert.
+
+**Mathematical development behind used method**
