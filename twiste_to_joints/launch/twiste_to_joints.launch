@@ -1,0 +1,6 @@
+<launch>
+  <node name="twiste_to_joints" pkg="twiste_to_joints" type="twiste_to_joints" output="screen">
+	  <param name="twist_topic" value="/cmd_vel_smoothed"/>
+  </node>
+	  
+</launch>
