@@ -31,17 +31,17 @@ Smoothing the angular and linear velocity output by the TEB to elliminate signal
 **Mathematical development behind used method**
 
 
-The resulted smooth function is the sum of applied numerical function on the velocity difference on every time instant with it's previous instant.
+- The resulted smooth function is the sum of applied numerical function on the velocity difference on every time instant with it's previous instant.
 
-The numerical function is deduced from the z transform.
+- The numerical function is deduced from the z transform.
 
 
-The equations of the used approches are:
+- The equations of the used approches are:
 
 ![image](https://user-images.githubusercontent.com/41051186/145858781-4b2e4a5b-05ca-4a36-bd8a-65399838c8f1.png)
 
 
-visualization of the applied algorithms.
+- Visualization of the applied algorithms.
 
 ![image](https://user-images.githubusercontent.com/41051186/145854879-3cdecf93-7706-4651-929e-be620341dc86.png)
 
