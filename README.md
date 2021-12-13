@@ -29,3 +29,7 @@ Smoothing the angular and linear velocity output by the TEB to elliminate signal
 > twist_topic: topic to subscribe for the output velocity to convert.
 
 **Mathematical development behind used method**
+
+![image](https://user-images.githubusercontent.com/41051186/145854506-325e7b60-e081-4d56-aeda-640d426627bb.png)
+
+![image](https://user-images.githubusercontent.com/41051186/145854540-68c4f782-b538-4af1-a879-1e1dd803e894.png)
