@@ -37,9 +37,11 @@ The numerical function is deduced from the z transform.
 
 
 The equations of the used approches are:
+
 ![image](https://user-images.githubusercontent.com/41051186/145858781-4b2e4a5b-05ca-4a36-bd8a-65399838c8f1.png)
 
 
 visualization of the applied algorithms.
+
 ![image](https://user-images.githubusercontent.com/41051186/145854879-3cdecf93-7706-4651-929e-be620341dc86.png)
 
