@@ -1,10 +1,10 @@
 <launch>
-  <node name="velocity_smoother" pkg="velocity_smoother" type="velocity_smoother_node" output="screen">
+  <node name="velocity_smoother" pkg="velocity_smoother" type="velocity_smoother" output="screen">
     <param name="twist_topic" value="/cmd_vel"/>
     <param name="smooth_twist_topic" value="/cmd_vel_smoothed"/>
     <param name="averaging_method" value="1"/>
     <param name="smooth_with_zero" value="true"/>
-    <param name="beta" value="0.7"/>
+    <param name="beta" value="0.3"/>
   </node>
 	  
 </launch>

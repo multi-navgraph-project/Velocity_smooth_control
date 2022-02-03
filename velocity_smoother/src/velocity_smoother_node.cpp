@@ -1,7 +1,10 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <cmath>
+#include <velocity_smoother/velocity_smootherConfig.h>
+#include <dynamic_reconfigure/server.h>
 
+enum Method {decay=1, approch};
 
 ros::Subscriber cmd_sub;
 ros::Publisher cmd_pub;
@@ -9,25 +12,25 @@ int counter = 0;
 double vx_1 = 0, vx_2 = 0, ax_1 = 0, ax_2 = 0;
 float beta = 0.3;
 float a, b, c;
-int averaging_method;
+Method averaging_method = decay;
 bool smooth_zero;
 
+
+//smoother in se2 space
 void cmd_vel_callback(const geometry_msgs::TwistConstPtr &msg){
 	double vx, ax;
 	vx_2 = vx_1;
 	ax_2 = ax_1;
 	
-	if(averaging_method == 1 && (counter > 0 || smooth_zero)){
+	if(averaging_method == decay && (counter > 0 || smooth_zero)){
 		vx = beta * vx_1 + (1-beta) * msg->linear.x;
 		ax = beta * ax_1 + (1-beta) * msg->angular.z;
 	}
 
-	else if(averaging_method == 2 && (counter > 1 || smooth_zero)){
+	else if(averaging_method == approch && (counter > 1 || smooth_zero)){
 		vx = a * vx_2 + b * vx_1 + c * msg->linear.x;
 		ax = a * ax_2 + b * ax_1 + c * msg->angular.z;
 	}
-	
-	ROS_INFO("Original velocity: %f, Output velocity: %f", msg->linear.x, vx);
 	
 	
 	geometry_msgs::Twist msg_out = (*msg);
@@ -37,6 +40,12 @@ void cmd_vel_callback(const geometry_msgs::TwistConstPtr &msg){
 	vx_1 = vx;
 	ax_1 = ax;
 	counter++;
+}
+
+void reconfigure_callback(velocity_smoother::velocity_smootherConfig &config, uint32_t level) {
+  ROS_INFO("Reconfigure Request: %d %f", config.method, config.beta);
+  beta = config.beta;
+  averaging_method = (Method)config.method;
 }
 
 int main(int argc, char *argv[]){
@@ -55,18 +64,26 @@ int main(int argc, char *argv[]){
 	if(!ros::param::get("~/beta", beta))
 		ROS_ERROR("%s","Beta parameter must be defined");
 		//nh.param("beta", beta, 0.3);
-	nh.param<int>("averaging_method", averaging_method, 1);
+	int tmp;
+	nh.param<int>("averaging_method", tmp, 1);
+	averaging_method = (Method)tmp;
 	nh.param<bool>("smooth_with_zero", smooth_zero, false);
 	
-	if(averaging_method == 1)
+	if(averaging_method == approch)
 		ROS_INFO("Executing %s with beta equal %f", "exponential decay", beta);
-	else if(averaging_method == 2)
+	else if(averaging_method == decay)
 		ROS_INFO("Executing %s with beta equal %f", "exponential approach", beta);
 
 
 
-	if(averaging_method != 1 && averaging_method != 2)
+	if(averaging_method != decay && averaging_method != approch)
 		ROS_ERROR("%s", "velocity_smoother: Averging method is unknown.");
+		
+	dynamic_reconfigure::Server<velocity_smoother::velocity_smootherConfig> server;
+	dynamic_reconfigure::Server<velocity_smoother::velocity_smootherConfig>::CallbackType f;
+
+	f = boost::bind(&reconfigure_callback, _1, _2);
+	server.setCallback(f);
 
 	cmd_sub = nh.subscribe(input_topic, 10, cmd_vel_callback);
 	cmd_pub = nh.advertise<geometry_msgs::Twist>(output_topic, 10);
