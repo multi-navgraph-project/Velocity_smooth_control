@@ -17,6 +17,10 @@ Smoothing the angular and linear velocity output by the TEB to elliminate signal
 > smooth_with_zero: true to start the smooth signal from zero and false to tart from the initial value.
 
 > beta: a float between 0 and 1 to control the smoothing procedure. Approching 0 the signal would be slightly smoothed, approching 1 the signal would be very smooth (at exact 1.0 the exponential decay algorithm would ouput just the same signal but with a delay).
+
+> beta_decay_poses: Higher threshold of number of poses in planned path to start decaying the beta.
+
+> beta_canceling_poses: Lower threshold of number of poses in planned path to cancel beta.
  
  
  
